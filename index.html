@@ -1,157 +1,149 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catatan Pengeluaran Keuangan</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pencatat Keuangan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    input:focus {
+      border-color: #0077ff;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0077ff;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #005fd1;
+    }
+
+    .success-message {
+      margin-top: 16px;
+      text-align: center;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-wallet"></i> Catatan Pengeluaran</h1>
-            <p>Pantau pengeluaran Anda dengan mudah</p>
-        </header>
+  <div class="container">
+    <h2>Pencatatan Keuangan</h2>
+    <form id="keuanganForm">
+      <div class="form-group">
+        <label for="no">No</label>
+        <input type="number" id="no" name="no" required />
+      </div>
+      <div class="form-group">
+        <label for="pengeluaran">Pengeluaran</label>
+        <input type="text" id="pengeluaran" name="pengeluaran" required />
+      </div>
+      <div class="form-group">
+        <label for="jumlah">Jumlah Pengeluaran</label>
+        <input type="number" id="jumlah" name="jumlah" required />
+      </div>
+      <div class="form-group">
+        <label for="tanggal">Tanggal Pengeluaran</label>
+        <input type="date" id="tanggal" name="tanggal" required />
+      </div>
+      <button type="submit">Simpan</button>
+      <div class="success-message" id="successMsg"></div>
+    </form>
+  </div>
 
-        <div class="form-container">
-            <form id="expenseForm">
-                <div class="form-group">
-                    <label for="date">Tanggal:</label>
-                    <input type="date" id="date" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="day">Hari:</label>
-                    <select id="day" required>
-                        <option value="">Pilih Hari</option>
-                        <option value="Senin">Senin</option>
-                        <option value="Selasa">Selasa</option>
-                        <option value="Rabu">Rabu</option>
-                        <option value="Kamis">Kamis</option>
-                        <option value="Jumat">Jumat</option>
-                        <option value="Sabtu">Sabtu</option>
-                        <option value="Minggu">Minggu</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="amount">Jumlah Pengeluaran (Rp):</label>
-                    <input type="number" id="amount" min="0" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="description">Untuk Apa:</label>
-                    <input type="text" id="description" placeholder="Misal: Belanja bulanan, makan siang, dll" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="category">Kategori:</label>
-                    <select id="category" required>
-                        <option value="">Pilih Kategori</option>
-                        <option value="Makanan">Makanan</option>
-                        <option value="Transportasi">Transportasi</option>
-                        <option value="Hiburan">Hiburan</option>
-                        <option value="Kebutuhan Rumah">Kebutuhan Rumah</option>
-                        <option value="Kesehatan">Kesehatan</option>
-                        <option value="Lainnya">Lainnya</option>
-                    </select>
-                </div>
-                
-                <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Simpan</button>
-            </form>
-        </div>
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyruS3n3QGEKdtwdSlBMBXc26Ibdhj65TMRPLCeofb7WXxL47QcLC8jrqr7lWdVsTQ_TQ/exec';
+    const form = document.getElementById('keuanganForm');
+    const successMsg = document.getElementById('successMsg');
 
-        <div class="expenses-container">
-            <h2><i class="fas fa-list"></i> Daftar Pengeluaran Terakhir</h2>
-            <div class="controls">
-                <input type="text" id="searchInput" placeholder="Cari pengeluaran...">
-                <button id="exportBtn" class="export-btn"><i class="fas fa-file-export"></i> Ekspor ke Excel</button>
-            </div>
-            <div class="table-container">
-                <table id="expensesTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Tanggal</th>
-                            <th>Hari</th>
-                            <th>Jumlah</th>
-                            <th>Kategori</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="expensesList">
-                        <!-- Data akan dimuat di sini -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    form.addEventListener('submit', e => {
+      e.preventDefault();
 
-        <div class="summary">
-            <div class="summary-card">
-                <h3>Total Pengeluaran Bulan Ini</h3>
-                <p id="monthlyTotal">Rp 0</p>
-            </div>
-            <div class="summary-card">
-                <h3>Pengeluaran Hari Ini</h3>
-                <p id="dailyTotal">Rp 0</p>
-            </div>
-            <div class="summary-card">
-                <h3>Kategori Terbanyak</h3>
-                <p id="topCategory">-</p>
-            </div>
-        </div>
-    </div>
+      const data = {
+        no: document.getElementById('no').value,
+        pengeluaran: document.getElementById('pengeluaran').value,
+        jumlah: document.getElementById('jumlah').value,
+        tanggal: document.getElementById('tanggal').value,
+      };
 
-    <div class="modal" id="editModal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Edit Pengeluaran</h2>
-            <form id="editForm">
-                <input type="hidden" id="editId">
-                <div class="form-group">
-                    <label for="editDate">Tanggal:</label>
-                    <input type="date" id="editDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="editDay">Hari:</label>
-                    <select id="editDay" required>
-                        <option value="Senin">Senin</option>
-                        <option value="Selasa">Selasa</option>
-                        <option value="Rabu">Rabu</option>
-                        <option value="Kamis">Kamis</option>
-                        <option value="Jumat">Jumat</option>
-                        <option value="Sabtu">Sabtu</option>
-                        <option value="Minggu">Minggu</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="editAmount">Jumlah (Rp):</label>
-                    <input type="number" id="editAmount" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label for="editDescription">Untuk Apa:</label>
-                    <input type="text" id="editDescription" required>
-                </div>
-                <div class="form-group">
-                    <label for="editCategory">Kategori:</label>
-                    <select id="editCategory" required>
-                        <option value="Makanan">Makanan</option>
-                        <option value="Transportasi">Transportasi</option>
-                        <option value="Hiburan">Hiburan</option>
-                        <option value="Kebutuhan Rumah">Kebutuhan Rumah</option>
-                        <option value="Kesehatan">Kesehatan</option>
-                        <option value="Lainnya">Lainnya</option>
-                    </select>
-                </div>
-                <button type="submit" class="submit-btn">Simpan Perubahan</button>
-            </form>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="script.js"></script>
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          successMsg.textContent = "Data berhasil disimpan!";
+          form.reset();
+        } else {
+          successMsg.textContent = "Gagal menyimpan data.";
+        }
+      })
+      .catch(error => {
+        successMsg.textContent = "Terjadi kesalahan: " + error.message;
+      });
+    });
+  </script>
 </body>
 </html>
