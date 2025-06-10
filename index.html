@@ -236,51 +236,77 @@
             }
         }
         
-        // Fungsi untuk menyimpan pengeluaran baru atau update
-        async function saveExpense() {
-            const name = document.getElementById('expenseName').value;
-            const amount = document.getElementById('expenseAmount').value;
-            const date = document.getElementById('expenseDate').value;
-            const category = document.getElementById('expenseCategory').value;
-            
-            if (!name || !amount || !date || !category) {
-                alert('Harap isi semua field!');
-                return;
-            }
-            
-            const data = {
-                id: editingId,
-                name: name,
-                amount: amount,
-                date: date,
-                category: category
-            };
-            
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                const result = await response.json();
-                console.log('Success:', result);
-                
-                // Reset form dan muat ulang data
-                document.getElementById('expenseForm').reset();
-                loadExpenses();
-                
-                // Jika sedang edit, kembalikan ke mode tambah
-                if (editingId) {
-                    cancelEdit();
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Gagal menyimpan pengeluaran');
-            }
-        }
+        // Fungsi untuk menyimpan pengeluaran baru atau updatefunction doPost(e) {
+  try {
+    // Validasi request
+    if (!e || !e.postData || !e.postData.contents) {
+      return createErrorResponse("Invalid request", 400);
+    }
+
+    // Parse data
+    const requestData = JSON.parse(e.postData.contents);
+    
+    // Validasi data
+    if (!requestData.name || !requestData.amount || !requestData.date) {
+      return createErrorResponse("Missing required fields", 400);
+    }
+
+    // Buka spreadsheet
+    const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    const sheet = spreadsheet.getSheetByName(SHEET_NAME) || spreadsheet.insertSheet(SHEET_NAME);
+    
+    // Inisialisasi sheet jika kosong
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(["ID", "No", "Nama Pengeluaran", "Jumlah", "Tanggal", "Kategori", "Dibuat Pada"]);
+    }
+
+    // Generate ID baru
+    const id = Utilities.getUuid();
+    const no = sheet.getLastRow();
+    const now = new Date();
+    
+    // Format data
+    const rowData = [
+      id,
+      no,
+      requestData.name,
+      parseFloat(requestData.amount),
+      new Date(requestData.date).toISOString().split('T')[0],
+      requestData.category || "",
+      now.toISOString()
+    ];
+
+    // Simpan ke sheet
+    sheet.appendRow(rowData);
+    
+    // Return response
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "success",
+      data: {
+        id: id,
+        no: no,
+        name: requestData.name,
+        amount: requestData.amount,
+        date: requestData.date,
+        category: requestData.category || ""
+      }
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    console.error("Error:", error);
+    return createErrorResponse(error.message, 500);
+  }
+}
+
+function createErrorResponse(message, code) {
+  const output = ContentService.createTextOutput(JSON.stringify({
+    status: "error",
+    message: message
+  }));
+  output.setMimeType(ContentService.MimeType.JSON);
+  output.setStatusCode(code);
+  return output;
+}
         
         // Fungsi untuk mengedit pengeluaran
         async function editExpense(id) {
