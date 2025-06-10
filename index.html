@@ -1,149 +1,381 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pencatat Keuangan</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
-    body {
-      margin: 0;
-      background: #f4f6f8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      background: #ffffff;
-      padding: 32px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-      width: 100%;
-      max-width: 500px;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 24px;
-      color: #333;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #555;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="date"] {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      outline: none;
-      transition: border 0.3s;
-    }
-
-    input:focus {
-      border-color: #0077ff;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #0077ff;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background: #005fd1;
-    }
-
-    .success-message {
-      margin-top: 16px;
-      text-align: center;
-      color: green;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Pencatat Keuangan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .edit-btn {
+            background-color: #f39c12;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+        }
+        
+        .total-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #eaf7fd;
+            border-radius: 4px;
+            text-align: right;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Pencatatan Keuangan</h2>
-    <form id="keuanganForm">
-      <div class="form-group">
-        <label for="no">No</label>
-        <input type="number" id="no" name="no" required />
-      </div>
-      <div class="form-group">
-        <label for="pengeluaran">Pengeluaran</label>
-        <input type="text" id="pengeluaran" name="pengeluaran" required />
-      </div>
-      <div class="form-group">
-        <label for="jumlah">Jumlah Pengeluaran</label>
-        <input type="number" id="jumlah" name="jumlah" required />
-      </div>
-      <div class="form-group">
-        <label for="tanggal">Tanggal Pengeluaran</label>
-        <input type="date" id="tanggal" name="tanggal" required />
-      </div>
-      <button type="submit">Simpan</button>
-      <div class="success-message" id="successMsg"></div>
-    </form>
-  </div>
+    <div class="container">
+        <h1>Aplikasi Pencatat Keuangan</h1>
+        
+        <form id="expenseForm">
+            <div class="form-group">
+                <label for="expenseName">Nama Pengeluaran:</label>
+                <input type="text" id="expenseName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="expenseAmount">Jumlah Pengeluaran (Rp):</label>
+                <input type="number" id="expenseAmount" required min="0">
+            </div>
+            
+            <div class="form-group">
+                <label for="expenseDate">Tanggal Pengeluaran:</label>
+                <input type="date" id="expenseDate" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="expenseCategory">Kategori:</label>
+                <select id="expenseCategory" required>
+                    <option value="">Pilih Kategori</option>
+                    <option value="Makanan">Makanan</option>
+                    <option value="Transportasi">Transportasi</option>
+                    <option value="Hiburan">Hiburan</option>
+                    <option value="Tagihan">Tagihan</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="submitBtn">Simpan Pengeluaran</button>
+            <button type="button" id="cancelEdit" style="display: none; background-color: #95a5a6;">Batal Edit</button>
+        </form>
+        
+        <div class="total-section">
+            Total Pengeluaran: <span id="totalExpense">Rp 0</span>
+        </div>
+        
+        <table id="expenseTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Pengeluaran</th>
+                    <th>Jumlah</th>
+                    <th>Tanggal</th>
+                    <th>Kategori</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
-  <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyruS3n3QGEKdtwdSlBMBXc26Ibdhj65TMRPLCeofb7WXxL47QcLC8jrqr7lWdVsTQ_TQ/exec';
-    const form = document.getElementById('keuanganForm');
-    const successMsg = document.getElementById('successMsg');
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-
-      const data = {
-        no: document.getElementById('no').value,
-        pengeluaran: document.getElementById('pengeluaran').value,
-        jumlah: document.getElementById('jumlah').value,
-        tanggal: document.getElementById('tanggal').value,
-      };
-
-      fetch(scriptURL, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
+    <script>
+        // URL Google Apps Script Web App Anda
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0xC-kBVG6bOxs9sHAzuo9N6AvOKEr6hKJkBNt6aIZUci-E5xtwjIX0nfzvq4YGsFp5Q/exec";
+        
+        // Variabel untuk menyimpan data yang sedang diedit
+        let editingId = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadExpenses();
+            
+            // Tangani submit form
+            document.getElementById('expenseForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveExpense();
+            });
+            
+            // Tombol batal edit
+            document.getElementById('cancelEdit').addEventListener('click', function() {
+                cancelEdit();
+            });
+        });
+        
+        // Fungsi untuk memuat data pengeluaran
+        async function loadExpenses() {
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                
+                const tbody = document.querySelector('#expenseTable tbody');
+                tbody.innerHTML = '';
+                
+                let total = 0;
+                
+                // Lewati header (baris pertama) jika ada
+                const startRow = data[0][0] === 'No' ? 1 : 0;
+                
+                for (let i = startRow; i < data.length; i++) {
+                    const row = data[i];
+                    const tr = document.createElement('tr');
+                    tr.setAttribute('data-id', row[0]); // Simpan ID di atribut data
+                    
+                    const amount = parseFloat(row[2]) || 0;
+                    total += amount;
+                    
+                    tr.innerHTML = `
+                        <td>${row[0]}</td>
+                        <td>${row[1]}</td>
+                        <td>Rp ${amount.toLocaleString('id-ID')}</td>
+                        <td>${formatDate(row[3])}</td>
+                        <td>${row[4] || '-'}</td>
+                        <td class="action-btns">
+                            <button class="edit-btn" onclick="editExpense('${row[0]}')">Edit</button>
+                            <button class="delete-btn" onclick="deleteExpense('${row[0]}')">Hapus</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+                
+                // Update total pengeluaran
+                document.getElementById('totalExpense').textContent = `Rp ${total.toLocaleString('id-ID')}`;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Gagal memuat data pengeluaran');
+            }
         }
-      })
-      .then(response => {
-        if (response.ok) {
-          successMsg.textContent = "Data berhasil disimpan!";
-          form.reset();
-        } else {
-          successMsg.textContent = "Gagal menyimpan data.";
+        
+        // Fungsi untuk menyimpan pengeluaran baru atau update
+        async function saveExpense() {
+            const name = document.getElementById('expenseName').value;
+            const amount = document.getElementById('expenseAmount').value;
+            const date = document.getElementById('expenseDate').value;
+            const category = document.getElementById('expenseCategory').value;
+            
+            if (!name || !amount || !date || !category) {
+                alert('Harap isi semua field!');
+                return;
+            }
+            
+            const data = {
+                id: editingId,
+                name: name,
+                amount: amount,
+                date: date,
+                category: category
+            };
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                console.log('Success:', result);
+                
+                // Reset form dan muat ulang data
+                document.getElementById('expenseForm').reset();
+                loadExpenses();
+                
+                // Jika sedang edit, kembalikan ke mode tambah
+                if (editingId) {
+                    cancelEdit();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Gagal menyimpan pengeluaran');
+            }
         }
-      })
-      .catch(error => {
-        successMsg.textContent = "Terjadi kesalahan: " + error.message;
-      });
-    });
-  </script>
+        
+        // Fungsi untuk mengedit pengeluaran
+        async function editExpense(id) {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?id=${id}`);
+                const data = await response.json();
+                
+                if (data && data.length > 0) {
+                    const expense = data[0];
+                    editingId = expense[0];
+                    
+                    // Isi form dengan data yang akan diedit
+                    document.getElementById('expenseName').value = expense[1];
+                    document.getElementById('expenseAmount').value = expense[2];
+                    document.getElementById('expenseDate').value = formatDateForInput(expense[3]);
+                    document.getElementById('expenseCategory').value = expense[4] || '';
+                    
+                    // Ubah tombol submit dan tampilkan tombol batal
+                    document.getElementById('submitBtn').textContent = 'Update Pengeluaran';
+                    document.getElementById('cancelEdit').style.display = 'inline-block';
+                    
+                    // Scroll ke form
+                    document.getElementById('expenseForm').scrollIntoView({ behavior: 'smooth' });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Gagal memuat data untuk diedit');
+            }
+        }
+        
+        // Fungsi untuk membatalkan edit
+        function cancelEdit() {
+            editingId = null;
+            document.getElementById('expenseForm').reset();
+            document.getElementById('submitBtn').textContent = 'Simpan Pengeluaran';
+            document.getElementById('cancelEdit').style.display = 'none';
+        }
+        
+        // Fungsi untuk menghapus pengeluaran
+        async function deleteExpense(id) {
+            if (!confirm('Apakah Anda yakin ingin menghapus pengeluaran ini?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: id })
+                });
+                
+                const result = await response.json();
+                console.log('Success:', result);
+                
+                // Muat ulang data
+                loadExpenses();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Gagal menghapus pengeluaran');
+            }
+        }
+        
+        // Fungsi helper untuk format tanggal
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return dateString;
+            
+            return date.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+        
+        // Fungsi helper untuk format tanggal ke input date
+        function formatDateForInput(dateString) {
+            if (!dateString) return '';
+            
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return '';
+            
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}`;
+        }
+        
+        // Ekspos fungsi ke global scope untuk button onclick
+        window.editExpense = editExpense;
+        window.deleteExpense = deleteExpense;
+    </script>
 </body>
 </html>
