@@ -1,4 +1,5 @@
-
+## Link sheet menyimpan data nya
+(https://docs.google.com/spreadsheets/d/1SNEPFZfnZ9UBkNGN-_Cp_Ma93HSayPL3cfCr02Igufo/edit?usp=sharing)
 ## Cara Clone dan Deploy ke Google Apps Script
 
 1. **Clone Repository**
