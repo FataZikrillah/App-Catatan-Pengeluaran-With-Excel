@@ -1,4 +1,3 @@
----
 
 ## Cara Clone dan Deploy ke Google Apps Script
 
@@ -23,7 +22,7 @@
 5. **Atur Izin**
     - Saat pertama kali menjalankan, Anda akan diminta memberikan izin akses ke Google Sheet.
 
----
+
 
 ## Kontribusi
 
